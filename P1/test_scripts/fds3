@@ -1,0 +1,1 @@
+echo word1 word2 | cat | ./open_fds | cat

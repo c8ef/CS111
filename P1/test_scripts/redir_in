@@ -1,0 +1,2 @@
+wc < test_scripts/data1
+echo testing 1 2 3

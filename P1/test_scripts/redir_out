@@ -1,0 +1,3 @@
+echo first second third > _test_data_
+echo ****
+cat _test_data_

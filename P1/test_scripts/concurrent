@@ -1,0 +1,1 @@
+dd if=/dev/zero count=1000 bs=4000 status=none | wc -c

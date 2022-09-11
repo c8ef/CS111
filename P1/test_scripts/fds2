@@ -1,0 +1,2 @@
+./open_fds > _test_data_ < open_fds
+cat _test_data_

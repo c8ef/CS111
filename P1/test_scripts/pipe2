@@ -1,0 +1,3 @@
+echo word1 word2 | cat > _test_data_ | echo word3 word4 | cat < test_scripts/data1 | grep d
+echo ****
+cat _test_data_

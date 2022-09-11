@@ -1,0 +1,46 @@
+# This file describes test cases for this project. See the comments
+# in run_tests for information about how this information is formatted.
+
+./sh111 < test_scripts/words
+a bb ccc dddd
+
+./sh111 < test_scripts/redir_out
+****
+first second third
+
+./sh111 < test_scripts/redir_in
+ 3  9 40
+testing 1 2 3
+
+./sh111 < test_scripts/pipe1
+second line
+third line
+
+./sh111 < test_scripts/pipe2
+second line
+third line
+****
+word1 word2
+
+./sh111 < test_scripts/fds1
+Open file descriptors: 0, 1, 2
+
+./sh111 < test_scripts/fds2
+Open file descriptors: 0, 1, 2
+
+./sh111 < test_scripts/fds3
+Open file descriptors: 0, 1, 2
+
+./sh111 < test_scripts/bad_file_in
+!No such file or directory
+
+./sh111 > test_scripts/missing_dir/out_file
+!test_scripts/missing_dir/out_file: Directory nonexistent
+
+./sh111 < test_scripts/bad_prog
+!No such file or directory
+
+# This command will hang if the pipeline stages don't run
+# concurrently (the pipe buffer for dd will fill)
+./sh111 < test_scripts/concurrent
+4000000
