@@ -43,6 +43,54 @@ struct cmd {
   std::vector<redirect> redirs;
 };
 
+int spawn_proc(int in, int out, int fd0, cmd command) {
+  char *argvs[command.args.size() + 1];
+  for (size_t i = 0; i < command.args.size(); ++i) {
+    argvs[i] = (char *)command.args[i].c_str();
+  }
+  argvs[command.args.size()] = nullptr;
+
+  pid_t pid;
+  if ((pid = fork()) == 0) {
+    for (size_t i = 0; i < command.redirs.size(); ++i) {
+      if (command.redirs[i].fd == 0) {
+        in = 0;
+        int fd = open(command.redirs[i].path.c_str(), O_RDONLY);
+        if (fd == -1) {
+          std::cerr << strerror(errno) << '\n';
+          exit(1);
+        }
+        dup2(fd, STDIN_FILENO);
+        close(fd);
+      } else {
+        out = 0;
+        int fd = open(command.redirs[i].path.c_str(),
+                      O_WRONLY | O_CREAT | O_TRUNC, 0666);
+        dup2(fd, STDOUT_FILENO);
+        close(fd);
+      }
+    }
+    if (in) {
+      dup2(in, STDIN_FILENO);
+      close(in);
+    }
+    if (out) {
+      dup2(out, STDOUT_FILENO);
+      close(out);
+    }
+    // this is the only place that argument `fd0` been used
+    // to ensure each child process starts with only three open file descriptors
+    close(fd0);
+    int ret = execvp(argvs[0], argvs);
+    if (ret == -1) {
+      std::cerr << strerror(errno) << '\n';
+      exit(1);
+    }
+    return 0;
+  }
+  return pid;
+}
+
 // A pipeline is series of commands.  Unless overriden by I/O redirections,
 // standard output of command [n] should be connected to standard input of
 // command [n+1] using a pipe.  Standard input of the first command and
@@ -60,7 +108,29 @@ using pipeline = std::vector<cmd>;
 // before it returns.
 void run_pipeline(pipeline pl) {
   // You have to implement this function
-  std::cerr << "run_pipeline function hasn't been implemented" << std::endl;
+  int fd[2];
+  pid_t pid;
+  int in;
+
+  in = 0;
+  for (size_t i = 0; i < pl.size() - 1; ++i) {
+    pipe(fd);
+
+    pid = spawn_proc(in, fd[1], fd[0], pl[i]);
+    if (in != 0)
+      close(in);
+    close(fd[1]);
+    in = fd[0];
+  }
+
+  if (in != 0)
+    in = fd[0];
+
+  pid = spawn_proc(in, 0, fd[0], pl.back());
+  if (in != 0)
+    close(in);
+  waitpid(pid, NULL, 0);
+  return;
 }
 
 inline bool isspecial(char c) {
