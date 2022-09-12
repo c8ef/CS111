@@ -1,0 +1,51 @@
+# This file describes test cases for this project. See the comments
+# in run_tests for information about how this information is formatted.
+
+./test yield_to_self
+main thread yielding
+main thread yielding again
+main thread back from second yield
+
+./test yield_to_child
+main thread yielding to child thread
+child thread running; about to yield
+main thread running, about to yield
+child thread running again; exiting
+main thread running, about to yield (but no other threads)
+main thread back from yield
+
+./test yield_many
+main thread yielding
+child 0 woke up (exiting now)
+child 1 woke up (exiting now)
+child 2 woke up (exiting now)
+child 3 woke up (exiting now)
+child 4 woke up (exiting now)
+child 5 woke up (exiting now)
+child 6 woke up (exiting now)
+child 7 woke up (exiting now)
+child 8 woke up (exiting now)
+child 9 woke up (exiting now)
+main thread back from yield
+
+./test block
+main thread yielding to child
+child thread running; about to block
+main thread yielding again (child still blocked)
+main thread woke up; waking child, then yielding
+child thread woke up from block; exiting
+main thread back from final yield
+
+./test preempt
+main now running
+child1 now running
+child2 now running
+main now running
+child1 now running
+child2 now running
+main now running
+child1 now running; exiting
+child2 now running
+main now running
+child2 now running; exiting
+main now running; finished

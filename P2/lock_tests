@@ -1,0 +1,66 @@
+# This file describes test cases for this project. See the comments
+# in run_tests for information about how this information is formatted.
+
+./test mutex_basic
+main thread yielding to child while holding lock
+child thread attempting to lock
+main thread yielding again while holding lock
+main thread releasing lock then trying to reacquire
+child thread acquired lock; now unlocking
+main thread reaqcuired lock
+
+./test mutex_many_threads
+main thread yielding to children while holding locks
+child 0 locking m1
+child 1 locking m1
+child 2 locking m1
+main thread unlocking m1 then yielding
+child 0 unlocking m1, locking m2
+main thread yielding again
+child 1 unlocking m1, locking m2
+main thread yielding again
+child 2 unlocking m1, locking m2
+main thread unlocking m2 then trying to lock m1
+main thread unlocking m1, then trying to reacquire m2
+child 0 locked m2; unlocking and exiting
+child 1 locked m2; unlocking and exiting
+child 2 locked m2; unlocking and exiting
+main thread reaqcuired m2
+
+./test cond_basic
+main thread yielding to child
+child waiting on condition
+main thread locking mutex
+main thread signalling condition, then yielding (holding lock)
+main thread unlocking mutex, then yielding again
+child wokeup from c.wait; exiting
+main thread woke up from yield, signalling again
+main thread yielding one last time
+main thread back from final yield
+
+./test two_conds
+main thread yielding to children
+child 1 waiting on condition 1
+child 2 waiting on condition 2
+main thread signaling condition 1, then yielding
+child 1 wokeup from c1.wait; waiting again
+main thread broadcasting condition 1, then yielding
+child 1 wokeup again; exiting
+main thread signaling condition 2, then yielding
+child 2 wokeup from wait; exiting
+main thread woke up from yield
+
+./test broadcast
+main thread yielding to children
+child 0 waiting on condition
+child 1 waiting on condition
+child 2 waiting on condition
+child 3 waiting on condition
+child 4 waiting on condition
+main thread broadcasting condition 1, then yielding
+child 0 wokeup after wait; exiting
+child 1 wokeup after wait; exiting
+child 2 wokeup after wait; exiting
+child 3 wokeup after wait; exiting
+child 4 wokeup after wait; exiting
+main thread woke up from yield
