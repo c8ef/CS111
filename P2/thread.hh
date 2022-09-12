@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <functional>
+#include <map>
 #include <memory>
 #include <mutex>
 #include <stdexcept>
@@ -55,12 +56,23 @@ public:
 private:
   // Constructor that does not allocate a stack, for initial_thread only.
   Thread(std::nullptr_t);
+  Thread(std::function<void()> func, size_t stack_size);
   ~Thread();
 
+  static void invoke() {
+    static_func();
+    exit();
+  }
+
+  static std::map<Thread *, std::function<void()>> thread2func;
   // A Thread object for the program's initial thread.
   static Thread *initial_thread;
+  static Thread *current_thread;
 
   // Fill in other fields and/or methods that you need.
+  static std::function<void()> static_func;
+  Bytes stack;
+  sp_t sp = nullptr;
 };
 
 // Throw this in response to incorrect use of synchronization
