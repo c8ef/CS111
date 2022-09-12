@@ -51,6 +51,7 @@ void Thread::swtch() {
   current_thread = thread_queue.front();
   thread_queue.pop_front();
   static_func = thread2func[current_thread];
+  intr_enable(true);
   stack_switch(&prev->sp, &current_thread->sp);
 }
 
@@ -66,6 +67,7 @@ void Thread::exit() {
   current_thread = thread_queue.front();
   thread_queue.pop_front();
   static_func = thread2func[current_thread];
+  intr_enable(true);
   stack_switch(&prev->sp, &current_thread->sp);
 
   std::abort(); // Leave this line--control should never reach here
@@ -73,4 +75,5 @@ void Thread::exit() {
 
 void Thread::preempt_init(std::uint64_t usec) {
   // You have to implement this
+  timer_init(usec, preempt_handler);
 }

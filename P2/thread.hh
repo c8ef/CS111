@@ -64,6 +64,8 @@ private:
     exit();
   }
 
+  static void preempt_handler() { Thread::yield(); }
+
   static std::map<Thread *, std::function<void()>> thread2func;
   // A Thread object for the program's initial thread.
   static Thread *initial_thread;
