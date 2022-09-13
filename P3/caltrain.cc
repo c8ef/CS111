@@ -11,41 +11,54 @@ public:
 private:
   // Synchronizes access to all information in this object.
   std::mutex mutex_;
-  std::condition_variable full_, seat_;
+  std::condition_variable leave_, capa_, board_;
 
-  int waiting_num_;
-  int ready_to_aboard_;
-  int available_seat_;
+  int capacity_;
+  int waiting_;
+  int boarding_;
+  int sitting_;
 };
 
 Station::Station()
-    : mutex_(), full_(), seat_(), waiting_num_(0), ready_to_aboard_(0),
-      available_seat_(0) {}
+    : mutex_(), leave_(), capa_(), board_(), capacity_(0), waiting_(0),
+      boarding_(0), sitting_(0) {}
 
 void Station::load_train(int available) {
   std::unique_lock lock(mutex_);
-  available_seat_ += available;
+  capacity_ = available;
 
-  if (available_seat_ != 0)
-    seat_.notify_all();
+  if (capacity_ > 0)
+    // wake up passengers according to capacity
+    for (int i = 0; i < capacity_; ++i)
+      capa_.notify_one();
 
-  while (!(waiting_num_ == 0 || available_seat_ == 0))
-    full_.wait(lock);
+  while (!((boarding_ == sitting_) && (sitting_ == capacity_ || waiting_ == 0)))
+    leave_.wait(lock);
+
+  // when a train leaves, restore state variables
+  capacity_ = 0;
+  sitting_ = 0;
+  boarding_ = 0;
 }
 
 void Station::wait_for_train() {
   std::unique_lock lock(mutex_);
-  waiting_num_++;
+  ++waiting_;
 
-  while (!(available_seat_ != 0))
-    seat_.wait(lock);
+  while (capacity_ == 0)
+    capa_.wait(lock);
+  --waiting_;
+  ++boarding_;
+
+  board_.notify_all();
 }
 
 void Station::seated() {
   std::unique_lock lock(mutex_);
-  --waiting_num_;
-  --available_seat_;
+  while (sitting_ == boarding_)
+    board_.wait(lock);
+  ++sitting_;
 
-  if (available_seat_ == 0 || waiting_num_ == 0)
-    full_.notify_all();
+  if ((boarding_ == sitting_) && (sitting_ == capacity_ || waiting_ == 0))
+    leave_.notify_all();
 }
