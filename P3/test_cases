@@ -1,0 +1,110 @@
+# This file describes test cases for this project. See the comments
+# in run_tests for information about how this information is formatted.
+
+./caltrain_test no_waiting_passengers
+Full train arrives with no waiting passengers
+load_train returned
+Train with 10 seats arrives with no waiting passengers
+load_train returned
+
+./caltrain_test basic
+Passenger arrives, begins waiting
+Train arrives with no empty seats
+load_train returned, train left
+Train arrives with 3 seats available
+Passenger started boarding
+Second passenger arrives
+Second passenger started boarding
+First passenger finishes boarding
+Second passenger finishes boarding
+load_train returned, train left
+
+./caltrain_test board_in_parallel
+4 passengers arrive, begin waiting
+Train arrives with 3 empty seats
+3 passengers began boarding
+2 passengers finished boarding
+Third passenger finished boarding
+load_train returned, train left
+Another train arrives with 10 empty seats
+Last passenger began boarding
+Last passenger finished boarding
+load_train returned, train left
+
+./caltrain_test random
+~Test completed with 0 errors
+
+./party_test two_guests_perfect_match
+guest_a arrives: sign 0, other_sign 5
+guest_b arrives: sign 5, other_sign 0
+guest_a received guest_b as its match
+guest_b received guest_a as its match
+
+./party_test return_in_order
+guest_a arrives: sign 1, other_sign 3
+guest_b arrives: sign 1, other_sign 3
+guest_c arrives: sign 1, other_sign 3
+guest_d arrives: sign 3, other_sign 1
+guest_a received guest_d as its match
+guest_d received guest_a as its match
+guest_e arrives: sign 3, other_sign 1
+guest_b received guest_e as its match
+guest_e received guest_b as its match
+guest_f arrives: sign 3, other_sign 1
+guest_c received guest_f as its match
+guest_f received guest_c as its match
+
+./party_test sign_matching
+guest_a arrives: sign 1, other_sign 3
+guest_b arrives: sign 2 other_sign 1
+guest_c arrives: sign 3, other_sign 2
+guest_d arrives: sign 3, other_sign 1
+guest_a received guest_d as its match
+guest_d received guest_a as its match
+guest_e arrives: sign 2, other_sign 3
+guest_c received guest_e as its match
+guest_e received guest_c as its match
+guest_f arrives: sign 1, other_sign 2
+guest_b received guest_f as its match
+guest_f received guest_b as its match
+
+./party_test single_sign
+guest_a arrives: sign 2, other_sign 2
+guest_b arrives: sign 2, other_sign 2
+guest_a received guest_b as its match
+guest_b received guest_a as its match
+
+./party_test single_sign_many
+guest 0 arrives: sign 2, other_sign 2
+guest 1 arrives: sign 2, other_sign 2
+guest 2 arrives: sign 2, other_sign 2
+guest 3 arrives: sign 2, other_sign 2
+guest 4 arrives: sign 2, other_sign 2
+guest 5 arrives: sign 2, other_sign 2
+guest 6 arrives: sign 2, other_sign 2
+guest 7 arrives: sign 2, other_sign 2
+guest 8 arrives: sign 2, other_sign 2
+guest 9 arrives: sign 2, other_sign 2
+0 received 1 as its match
+1 received 0 as its match
+2 received 3 as its match
+3 received 2 as its match
+4 received 5 as its match
+5 received 4 as its match
+6 received 7 as its match
+7 received 6 as its match
+8 received 9 as its match
+9 received 8 as its match
+
+./party_test same_name
+Zendaya (clone 1) arrives: sign 4, other_sign 5
+Zendaya (clone 2) arrives: sign 4, other_sign 5
+Zendaya (clone 3) arrives: sign 5, other_sign 4
+Zendaya (clone 1) received Zendaya as its match
+Zendaya (clone 3) received Zendaya as its match
+Zendaya (clone 4) arrives: sign 5, other_sign 4
+Zendaya (clone 2) received Zendaya as its match
+Zendaya (clone 4) received Zendaya as its match
+
+./party_test random_party
+~All guests matched successfully
