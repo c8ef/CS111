@@ -16,9 +16,9 @@ public:
 private:
   // Synchronizes access to this structure.
   std::mutex mutex_{};
-  std::queue<std::string> party_map_[25][25]{};
-  std::condition_variable cond_map_[25][25]{};
-  int same_index_[12]{};
+  std::queue<std::string> party_map_[2 * NUM_SIGNS + 1][2 * NUM_SIGNS + 1]{};
+  std::condition_variable cond_map_[2 * NUM_SIGNS + 1][2 * NUM_SIGNS + 1]{};
+  int same_index_[NUM_SIGNS]{};
 };
 
 std::string Party::meet(std::string &my_name, int my_sign, int other_sign) {
@@ -26,9 +26,9 @@ std::string Party::meet(std::string &my_name, int my_sign, int other_sign) {
   if (my_sign == other_sign) {
     ++same_index_[my_sign];
     if (same_index_[my_sign] % 2 == 0)
-      other_sign += 12;
+      other_sign += NUM_SIGNS;
     else
-      my_sign += 12;
+      my_sign += NUM_SIGNS;
   }
 
   party_map_[my_sign][other_sign].push(my_name);
