@@ -47,6 +47,8 @@ std::string Party::meet(std::string &my_name, int my_sign, int other_sign) {
   std::string ret = party_map_[other_sign][my_sign].front();
   party_map_[other_sign][my_sign].pop();
   min_time_[other_sign][my_sign].pop();
+  // this is very important
+  // otherwise some thread will wait forever
   cond_map_[other_sign][my_sign].notify_all();
   return ret;
 }

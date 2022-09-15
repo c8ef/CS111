@@ -1,2 +1,10 @@
 # CS111
-CS 111: Operating Systems Principles
+
+- [x] P1
+- [x] P2
+- [x] P3
+- [ ] P4
+- [ ] P5
+- [ ] P6
+- [ ] P7
+- [ ] P8
