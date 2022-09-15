@@ -34,8 +34,7 @@ std::string Party::meet(std::string &my_name, int my_sign, int other_sign) {
       my_sign += NUM_SIGNS;
   }
 
-  int curr_time = timer_;
-  timer_++;
+  int curr_time = timer_++;
   min_time_[other_sign][my_sign].push(curr_time);
 
   party_map_[my_sign][other_sign].push(my_name);
@@ -44,8 +43,10 @@ std::string Party::meet(std::string &my_name, int my_sign, int other_sign) {
   while (party_map_[other_sign][my_sign].size() == 0 ||
          curr_time != min_time_[other_sign][my_sign].top())
     cond_map_[other_sign][my_sign].wait(lock);
+
   std::string ret = party_map_[other_sign][my_sign].front();
   party_map_[other_sign][my_sign].pop();
   min_time_[other_sign][my_sign].pop();
+  cond_map_[other_sign][my_sign].notify_all();
   return ret;
 }
