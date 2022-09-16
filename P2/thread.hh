@@ -74,7 +74,6 @@ private:
   static Thread *initial_thread;
   static Thread *current_thread;
 
-  // Fill in other fields and/or methods that you need.
   static std::function<void()> static_func;
   static std::deque<Thread *> thread_queue;
   Bytes stack;
@@ -101,7 +100,6 @@ public:
   bool mine();
 
 private:
-  // You must implement this object
   int lock_{};
   std::queue<Thread *> block_queue_{};
   Thread *curr_{};
@@ -122,8 +120,7 @@ public:
 
 private:
   Mutex &m_;
-
-  // You need to implement this object
+  std::queue<Thread *> wait_queue_{};
 };
 
 // An object that acquires a lock in its constructor and releases it

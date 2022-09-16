@@ -31,10 +31,7 @@ void Thread::create(std::function<void()> main, size_t stack_size) {
   thread2func[new_thread] = main;
 }
 
-Thread *Thread::current() {
-  // Replace the code below with your implementation.
-  return current_thread;
-}
+Thread *Thread::current() { return current_thread; }
 
 void Thread::schedule() {
   for (auto ptr : thread_queue) {
@@ -75,6 +72,5 @@ void Thread::exit() {
 }
 
 void Thread::preempt_init(std::uint64_t usec) {
-  // You have to implement this
   timer_init(usec, preempt_handler);
 }

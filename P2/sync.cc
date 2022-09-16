@@ -5,7 +5,6 @@ void Mutex::lock() {
   if (mine())
     throw SyncError("acquiring mutex already locked by this thread");
 
-  // You need to implement the rest of this function
   IntrGuard ig;
 
   if (lock_ == 0) {
@@ -21,7 +20,6 @@ void Mutex::unlock() {
   if (!mine())
     throw SyncError("unlocking mutex not locked by this thread");
 
-  // You need to implement the rest of this function
   IntrGuard ig;
 
   if (block_queue_.size() == 0) {
@@ -35,7 +33,6 @@ void Mutex::unlock() {
 }
 
 bool Mutex::mine() {
-  // You need to implement this function
   IntrGuard ig;
   return curr_ == Thread::current();
 }
@@ -44,14 +41,24 @@ void Condition::wait() {
   if (!m_.mine())
     throw SyncError("Condition::wait must be called with mutex locked");
 
-  // You need to implement the rest of this function
+  IntrGuard ig;
+  m_.unlock();
+  wait_queue_.push(Thread::current());
+  Thread::swtch();
+  // when waking up from waiting, it must acquire lock
+  m_.lock();
 }
 
 void Condition::signal() {
   if (!m_.mine())
     throw SyncError("Condition::signal must be called with mutex locked");
 
-  // You need to implement the rest of this function
+  IntrGuard ig;
+  if (wait_queue_.size() > 0) {
+    Thread *curr = wait_queue_.front();
+    wait_queue_.pop();
+    curr->schedule();
+  }
 }
 
 void Condition::broadcast() {
@@ -59,5 +66,10 @@ void Condition::broadcast() {
     throw SyncError("Condition::broadcast must be called "
                     "with mutex locked");
 
-  // You need to implement the rest of this function
+  IntrGuard ig;
+  while (wait_queue_.size() > 0) {
+    Thread *curr = wait_queue_.front();
+    wait_queue_.pop();
+    curr->schedule();
+  }
 }
