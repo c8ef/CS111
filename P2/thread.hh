@@ -8,6 +8,7 @@
 #include <map>
 #include <memory>
 #include <mutex>
+#include <queue>
 #include <stdexcept>
 #include <utility>
 
@@ -60,7 +61,9 @@ private:
   ~Thread();
 
   static void invoke() {
-    static_func();
+    // choose function according to CURRENT_THREAD
+    // cannot static binding to static_func
+    thread2func[current_thread]();
     exit();
   }
 
@@ -73,6 +76,7 @@ private:
 
   // Fill in other fields and/or methods that you need.
   static std::function<void()> static_func;
+  static std::deque<Thread *> thread_queue;
   Bytes stack;
   sp_t sp = nullptr;
 };
@@ -98,6 +102,9 @@ public:
 
 private:
   // You must implement this object
+  int lock_{};
+  std::queue<Thread *> block_queue_{};
+  Thread *curr_{};
 };
 
 // A condition variable with one small twist.  Traditionally you

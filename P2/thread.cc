@@ -9,7 +9,7 @@ Thread *Thread::initial_thread = new Thread(nullptr);
 Thread *Thread::current_thread = initial_thread;
 std::map<Thread *, std::function<void()>> Thread::thread2func;
 std::function<void()> Thread::static_func = [] {};
-std::deque<Thread *> thread_queue;
+std::deque<Thread *> Thread::thread_queue;
 
 // Create a placeholder Thread for the program's initial thread (which
 // already has a stack, so doesn't need one allocated).
@@ -67,6 +67,7 @@ void Thread::exit() {
   current_thread = thread_queue.front();
   thread_queue.pop_front();
   static_func = thread2func[current_thread];
+  thread2func.erase(prev);
   intr_enable(true);
   stack_switch(&prev->sp, &current_thread->sp);
 
