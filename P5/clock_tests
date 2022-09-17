@@ -1,0 +1,63 @@
+# This file describes test cases for this project. See the comments
+# in run_tests for information about how this information is formatted.
+
+./test big_file
+Setting memory size to 5 pages
+Creating file with 15 pages
+Mapping with default region size
+Reading all page signatures from memory, in order
+Page 0 signature: __test__, page 0, checksum 0
+Page 1 signature: __test__, page 1, checksum 0
+Page 2 signature: __test__, page 2, checksum 0
+Page 3 signature: __test__, page 3, checksum 0
+Page 4 signature: __test__, page 4, checksum 0
+Page 5 signature: __test__, page 5, checksum 0
+Page 6 signature: __test__, page 6, checksum 0
+Page 7 signature: __test__, page 7, checksum 0
+Page 8 signature: __test__, page 8, checksum 0
+Page 9 signature: __test__, page 9, checksum 0
+Page 10 signature: __test__, page 10, checksum 0
+Page 11 signature: __test__, page 11, checksum 0
+Page 12 signature: __test__, page 12, checksum 0
+Page 13 signature: __test__, page 13, checksum 0
+Page 14 signature: __test__, page 14, checksum 0
+Paging I/O: 15 pages read, 0 pages written
+
+./test two_files
+Setting memory size to 5 pages
+Creating 2 files with 10 pages each
+Interleaved mapped accesses (single page in file 1, all pages in file 2)
+Sum1 30, sum2 135
+Paging I/O for file 1: 2 pages read, 0 pages written
+Paging I/O for file 2: 30 pages read, 0 pages written
+
+./test writeback
+Setting memory size to 5 pages
+Creating 3 files with 10 pages each
+Modifying page 1 of file 1
+Modifying page 2 of file 2
+Modifying page 3 of file 3
+Reading file 1 to flush all dirty pages
+Sum of digits read: 45
+Page signatures in file 2:
+__test2__, page 0, checksum 0
+__test2__, page 1, checksum 0
+__55552__, page 2, checksum -809451326
+__test2__, page 3, checksum 0
+__test2__, page 4, checksum 0
+__test2__, page 5, checksum 0
+__test2__, page 6, checksum 0
+__test2__, page 7, checksum 0
+__test2__, page 8, checksum 0
+__test2__, page 9, checksum 0
+Rereading modified data
+File 1: 4444, file 2: 5555, file 3: 6666
+Paging I/O for file 1: 10 pages read, 1 pages written
+Paging I/O for file 2: 2 pages read, 1 pages written
+Paging I/O for file 3: 2 pages read, 1 pages written
+
+./test random
+Setting memory size to 10 pages
+Creating file with 20 pages
+Accessing random pages, sometimes writing
+Checking final values in pages

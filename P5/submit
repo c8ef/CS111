@@ -1,0 +1,108 @@
+#!/usr/bin/python3
+
+# Used to submit projects for CS 111. Should be invoked in a directory
+# with a name of cs111_pN, where N is the project number.
+
+import argparse
+import datetime
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+class_name = "cs111"
+class_dir = "/usr/class/%s" % (class_name)
+submit_dir = class_dir + "/submissions"
+user = os.environ['USER']
+
+# Maximum allowable size of submission directory, in KB.
+max_kb = 10000
+
+# Maximum number of submissions allowed for one student for one project.
+max_submits = 10
+
+def plural(n):
+    if n == 1:
+        return ""
+    return "s"
+
+# Figure out which project is being submitted.
+wd = os.getcwd()
+match = re.match('.*/%s_p(\d*)$' % (class_name), wd)
+if not match:
+    print("Current directory doesn't appear to be a project directory;")
+    print("Must submit from a directory named \"%s_pN\", where \"N\" is"
+            % (class_name))
+    print("a project number.")
+    exit(1)
+else:
+    project = match.group(1)
+
+# Make clean and compress git repo.
+print("make clean")
+result = subprocess.run(["make", "clean"])
+if result.returncode != 0:
+      exit(1)
+print("git gc")
+result = subprocess.run(["git", "gc"])
+if result.returncode != 0:
+      exit(1)
+
+# Check the size of the project directory tree.
+result = subprocess.check_output(["du", "-s"]).decode("utf-8")
+size = int(re.match('(\d*)', result).group(1))
+if (size > max_kb):
+    print("Project is too large: %d kbytes (only %d kbytes allowed); delete"
+            % (size, max_kb))
+    print("unneeded files and try again. If you cannot get under the limit, ask")
+    print("for help on Ed.")
+    exit(1)
+
+# Make sure the submission directory exists.
+if not os.path.isdir(submit_dir):
+    print("The submission directory (%s) doesn't exist!" % (submit_dir))
+    print("Are you sure you are running on a myth machine? If so, post a note")
+    print("on Ed to get help.")
+    exit(1)
+
+# Pick a submission directory for this student (if there is already a
+# submission, generate a new directory name by appending a number)
+student_dir = "%s/p%s/%s" % (submit_dir, project, user)
+if os.path.exists(student_dir):
+    resub = 1
+    while True:
+        new_dir = "%s.%d" % (student_dir, resub)
+        if not os.path.exists(new_dir):
+            break
+        resub += 1
+        if resub >= max_submits:
+            print("You have already submitted this project %d times, which is"
+                    % (max_submits))
+            print("the maximum allowed. This suggests you are having problems")
+            print("with the submission script; please ask for help on Ed.")
+            exit(1)
+    print("You have previously submitted this project %d time%s; you will only"
+            % (resub, plural(resub)))
+    print("be able to submit %d more time%s." % (max_submits - resub,
+            plural(max_submits - resub)))
+    student_dir = new_dir
+
+answer = input("OK to submit project %s for user %s (y or n)? "
+        % (project, user))
+if not answer in ["y", "yes", "Y", "Yes"]:
+    exit(0)
+
+# Copy the directory tree.
+os.makedirs(student_dir)
+result = subprocess.run(["cp", "-r", ".", student_dir])
+if result.returncode != 0:
+      print("Couldn't copy files to %s; please ask for help on Ed"
+              % (student_dir))
+      exit(1)
+
+# Create a "submit_time" file in the directory.
+f = open(student_dir + "/submit_time", "w")
+f.write("Project submitted by %s at %s\n" % (user,
+        datetime.datetime.now().strftime("%m/%d/%Y %H:%M:%S")))
+f.close()

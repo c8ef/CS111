@@ -1,0 +1,118 @@
+#!/usr/bin/python3
+
+# This program runs one or more tests as indicated in the file
+# test_cases, and prints out information about any failures.
+#
+# Usage:
+# run_tests [test_case_file]
+# If test_case_file is provided, it name a file containing test case
+# descriptions; otherwise information is read from the file "test_cases".
+#
+# Format of test cases file: one or more blocks of lines, separated
+# by blank lines. Each block consists of one line giving a shell
+# command to invoke (bash) followed by one of:
+# (a) any number of lines of expected output from the command, terminated
+#     by a blank line
+# (b) a single line containing "@<file>" where <file> is the name of
+#     another file containing the desired output
+# (c) a single line starting with "~": the remainder of the line is
+#     a substring that must appear somewhere in the output
+# (d) a single line starting with "!": the test case is expected to
+#     generate output on stderr, and it must include the substring
+#     specified by the remainder of the line.
+
+import locale
+import os
+import subprocess
+import sys
+
+if len(sys.argv) == 2:
+  f = open(sys.argv[1], newline='\n')
+elif len(sys.argv) == 1:
+  f = open("test_cases", newline='\n')
+else:
+    print("Usage: run_tests [test_case_file]")
+    sys.exit(1)
+
+failures = 0
+
+while True:
+    # Skip blank lines and read command
+    while True:
+        command = f.readline();
+        if not command:
+            break
+        if command[0] == '#':
+            continue
+        command = command.rstrip();
+        if command:
+            break
+    if not command:
+        break
+
+    # Read expected output.
+    expected = ""
+    substring = ""
+    error = ""
+    line = f.readline().rstrip()
+    if len(line) == 0:
+        print("Error: no expected output for test case '%s'" % (command))
+        sys.exit()
+    elif line[0] == '@':
+        # Read expected output from a file
+        of = open(line[1:], "r", newline='\n')
+        expected = of.read()
+        of.close()
+    elif line[0] == '~':
+        substring = line[1:]
+    elif line[0] == '!':
+        error = line[1:]
+    else:
+      while line:
+          expected += line + '\n'
+          line = f.readline().rstrip()
+  
+    # Run the command (with a time limit).
+    print(command)
+    try:
+        result = subprocess.run(["sh", "-c", command], capture_output=True,
+                timeout=10, encoding=locale.getpreferredencoding())
+    except subprocess.TimeoutExpired as e:
+        failures += 1
+        print("Error: '%s' didn't finish" % (command))
+        continue
+
+    # Parse and check the results.
+    stdout = "".join(result.stdout.split('\r'))
+    stderr = "".join(result.stderr.split('\r'))
+    if error:
+        if error not in stderr:
+          failures += 1
+          print("Error: expected error output containing '%s', "
+                  "but actual stderr was" % (error))
+          print("------------------\n%s" % (stderr), end="")
+          print("------------------")
+    elif stderr:
+        print("Error: unexpected error output\n------------------\n%s"
+                % (result.stderr), end="")
+        print("------------------")
+
+    if substring and not substring in stdout:
+        failures += 1
+        print("Error: expected substring '%s' in output, "
+                "but actual output was" % (substring))
+        print("------------------\n%s" % (stdout), end="")
+        print("------------------")
+
+    if expected and (stdout != expected):
+        failures += 1
+        print("Error: expected output\n------------------\n%s" % (expected),
+                end="")
+        print("------------------\nbut actual output was")
+        print("------------------\n%s" % (stdout), end="")
+        print("------------------")
+
+if failures:
+    print("%d tests failed" % (failures))
+else:
+    print("All tests passed!")
