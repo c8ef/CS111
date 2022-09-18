@@ -1,0 +1,23 @@
+# This file describes test cases for this project. Each block of
+# lines describes one test. The first line is the command to invoke
+# to run the test, and the following lines are the expected output.
+# If the "output" starts with "@", it is actually the name of a
+# file containing the expected output.
+
+./diskimageaccess -i test_disks/basic
+@test_results/basic_inodes.out
+
+./diskimageaccess -p test_disks/basic
+@test_results/basic_paths.out
+
+./diskimageaccess -i test_disks/depthFile
+@test_results/depthFile_inodes.out
+
+./diskimageaccess -p test_disks/depthFile
+@test_results/depthFile_paths.out
+
+./diskimageaccess -i test_disks/dirFnameSize
+@test_results/dirFnameSize_inodes.out
+
+./diskimageaccess -p test_disks/dirFnameSize
+@test_results/dirFnameSize_paths.out
