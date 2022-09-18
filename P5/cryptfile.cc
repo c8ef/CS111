@@ -41,7 +41,9 @@ int CryptFile::aligned_pread(void *dst, size_t len, size_t offset) {
   if (n <= 0)
     return n;
   n -= n % blocksize;
-  crypt_.decrypt(static_cast<uint8_t *>(dst), buf.get(), n, offset);
+  // I have no idea what is happening here
+  // without '+ 16', the last 16 bytes will not be decrypted
+  crypt_.decrypt(static_cast<uint8_t *>(dst), buf.get(), n + 16, offset);
   pread_bytes += n;
   return n;
 }

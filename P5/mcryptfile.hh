@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <optional>
 
 #include "cryptfile.hh"
@@ -29,16 +30,10 @@ struct MCryptFile : public CryptFile {
 
   // Address of the first byte of the memory mapped file.  It is an
   // error to call this before calling map() or after calling unmap().
-  char *map_base() {
-    // You need to implement this
-    return nullptr;
-  }
+  char *map_base() { return map_base_; }
 
   // Size of mapped file (once map() has been called)
-  std::size_t map_size() {
-    // You need to implement this
-    return 0;
-  }
+  std::size_t map_size() { return map_size_; }
 
   // Flush all changes back to the encrypted file; pages currently
   // in memory remain there.
@@ -49,6 +44,17 @@ struct MCryptFile : public CryptFile {
   // objects have been created; later indications will have no effect.
   static void set_memory_size(std::size_t npages);
 
+  void fault(char *va);
+
 private:
-  // Add private member variables here as needed for your solution.
+  static PhysMem *phy_mem_;
+  static size_t page_num_;
+  static size_t vm_instance_;
+
+  VMRegion *vir_mem_;
+  size_t map_size_;
+  VPage map_base_;
+
+  std::map<VPage, int> page_env_;
+  std::map<VPage, PPage> v2p_;
 };
