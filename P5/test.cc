@@ -364,8 +364,6 @@ void random_test() {
              last_written[page], actual);
     }
   }
-  //    printf("Paging I/O : %lu pages read, %lu pages written\n",
-  //            f.pread_bytes/page_size, f.pwrite_bytes/page_size);
 }
 
 int main(int argc, char **argv) {

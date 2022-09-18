@@ -12,9 +12,11 @@ PhysMem *MCryptFile::phy_mem_ = nullptr;
 size_t MCryptFile::page_num_ = 1000;
 size_t MCryptFile::vm_instance_ = 0;
 
+std::map<VPage, int> MCryptFile::page_env_{};
+std::map<VPage, PPage> MCryptFile::v2p_{};
+
 MCryptFile::MCryptFile(Key key, std::string path)
-    : CryptFile(key, path), vir_mem_(nullptr), map_size_(0), map_base_(0),
-      page_env_(), v2p_() {}
+    : CryptFile(key, path), vir_mem_(nullptr), map_size_(0), map_base_(0) {}
 
 MCryptFile::~MCryptFile() {
   flush();

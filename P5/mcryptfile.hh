@@ -55,6 +55,6 @@ private:
   size_t map_size_;
   VPage map_base_;
 
-  std::map<VPage, int> page_env_;
-  std::map<VPage, PPage> v2p_;
+  static std::map<VPage, int> page_env_;
+  static std::map<VPage, PPage> v2p_;
 };
