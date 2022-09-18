@@ -28,7 +28,7 @@ Setting memory size to 5 pages
 Creating 2 files with 10 pages each
 Interleaved mapped accesses (single page in file 1, all pages in file 2)
 Sum1 30, sum2 135
-Paging I/O for file 1: 2 pages read, 0 pages written
+Paging I/O for file 1: 6 pages read, 6 pages written
 Paging I/O for file 2: 30 pages read, 0 pages written
 
 ./test writeback

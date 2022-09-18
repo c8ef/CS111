@@ -1,7 +1,8 @@
 #pragma once
 
-#include <map>
+#include <list>
 #include <optional>
+#include <unordered_map>
 
 #include "cryptfile.hh"
 
@@ -55,6 +56,10 @@ private:
   size_t map_size_;
   VPage map_base_;
 
-  static std::map<VPage, int> page_env_;
-  static std::map<VPage, PPage> v2p_;
+  static std::unordered_map<VPage, int> page_env_;
+  static std::unordered_map<VPage, PPage> v2p_;
+
+  static std::unordered_map<PPage, MCryptFile *> ppage2file_;
+  static std::list<PPage> lru_list_;
+  static std::unordered_map<PPage, std::list<PPage>::iterator> lru_map_;
 };

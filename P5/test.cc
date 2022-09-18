@@ -275,6 +275,7 @@ void two_files_test() {
   int sum2 = 0;
   for (int i = 0; i < 30; i++) {
     char c1 = p[page_size + 15];
+    p[page_size + 20] = 'y';
     char c2 = p2[(i % 10) * page_size + 16];
     sum1 += c1 - '0';
     sum2 += c2 - '0';
