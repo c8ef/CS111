@@ -1,0 +1,11 @@
+./examine.sh -a test-images/create-file.img
+@test-images/create-file.out
+
+./examine.sh -a test-images/create-directory.img
+@test-images/create-directory.out
+
+./examine.sh -a test-images/allocate-indirect-block.img
+@test-images/allocate-indirect-block.out
+
+./examine.sh -a test-images/unlink-rmdir.img
+@test-images/unlink-rmdir.out

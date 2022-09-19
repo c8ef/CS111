@@ -1,0 +1,11 @@
+*.a
+*.d
+*.o
+*~
+/apply
+/dumplog
+/fsckv6
+/fusecleanup
+/mkfsv6
+/mountv6
+/v6

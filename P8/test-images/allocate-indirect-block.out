@@ -1,0 +1,82 @@
+Reached log end: bad checksum
+played log entries 1704050449 to 1704050468
+3 used blocks (out of 7)
+Block 3:
+  0 01002e00 00000000 00000000 00000000  >  .             <
+ 16 01002e2e 00000000 00000000 00000000  >  ..            <
+ 32 10006269 672d6669 6c652e74 78740000  >  big-file.txt  <
+ 48 00000000 00000000 00000000 00000000  >                <
+*
+Block 4:
+  0 00000000 00000000 00000000 00000000  >                <
+ 16 05000000 00000000 00000000 00000000  >                <
+ 32 00000000 00000000 00000000 00000000  >                <
+*
+Block 5:
+  0 54686973 20697320 66696c65 20636f6e  >This is file con<
+ 16 74656e74 732e0a54 68697320 69732066  >tents. This is f<
+ 32 696c6520 636f6e74 656e7473 2e0a5468  >ile contents. Th<
+ 48 69732069 73206669 6c652063 6f6e7465  >is is file conte<
+ 64 6e74732e 0a546869 73206973 2066696c  >nts. This is fil<
+ 80 6520636f 6e74656e 74732e0a 54686973  >e contents. This<
+ 96 20697320 66696c65 20636f6e 74656e74  > is file content<
+112 732e0a54 68697320 69732066 696c6520  >s. This is file <
+128 636f6e74 656e7473 2e0a5468 69732069  >contents. This i<
+144 73206669 6c652063 6f6e7465 6e74732e  >s file contents.<
+160 0a546869 73206973 2066696c 6520636f  > This is file co<
+176 6e74656e 74732e0a 54686973 20697320  >ntents. This is <
+192 66696c65 20636f6e 74656e74 732e0a54  >file contents. T<
+208 68697320 69732066 696c6520 636f6e74  >his is file cont<
+224 656e7473 2e0a5468 69732069 73206669  >ents. This is fi<
+240 6c652063 6f6e7465 6e74732e 0a546869  >le contents. Thi<
+256 73206973 2066696c 6520636f 6e74656e  >s is file conten<
+272 74732e0a 54686973 20697320 66696c65  >ts. This is file<
+288 20636f6e 74656e74 732e0a54 68697320  > contents. This <
+304 69732066 696c6520 636f6e74 656e7473  >is file contents<
+320 2e0a5468 69732069 73206669 6c652063  >. This is file c<
+336 6f6e7465 6e74732e 0a546869 73206973  >ontents. This is<
+352 2066696c 6520636f 6e74656e 74732e0a  > file contents. <
+368 54686973 20697320 66696c65 20636f6e  >This is file con<
+384 74656e74 732e0a54 68697320 69732066  >tents. This is f<
+400 696c6520 636f6e74 656e7473 2e0a5468  >ile contents. Th<
+416 69732069 73206669 6c652063 6f6e7465  >is is file conte<
+432 6e74732e 0a546869 73206973 2066696c  >nts. This is fil<
+448 6520636f 6e74656e 74732e0a 54686973  >e contents. This<
+464 20697320 66696c65 20636f6e 74656e74  > is file content<
+480 732e0a54 68697320 69732066 696c6520  >s. This is file <
+496 636f6e74 656e7473 2e0a5468 69732069  >contents. This i<
+2 used inodes (out of 16)
+    1 drwxr-xr-x   2   0   0       48 Apr 25 2022 17:19:34  #1
+        ino: 1
+        i_mode: 0140755
+        i_nlink: 2
+        i_uid: 0
+        i_gid: 0
+        size(): 48
+        i_addr[0]: 3
+        i_addr[1]: 0
+        i_addr[2]: 0
+        i_addr[3]: 0
+        i_addr[4]: 0
+        i_addr[5]: 0
+        i_addr[6]: 0
+        i_addr[7]: 0
+        atime: Apr 25 2022 17:19:34
+        mtime: Apr 25 2022 17:19:34
+   16 -rw-------   1   0   0     4608 Apr 25 2022 17:19:34  #16
+        ino: 16
+        i_mode: 0110600
+        i_nlink: 1
+        i_uid: 0
+        i_gid: 0
+        size(): 4608
+        i_addr[0]: 4
+        i_addr[1]: 0
+        i_addr[2]: 0
+        i_addr[3]: 0
+        i_addr[4]: 0
+        i_addr[5]: 0
+        i_addr[6]: 0
+        i_addr[7]: 0
+        atime: Apr 25 2022 17:19:34
+        mtime: Apr 25 2022 17:19:34
