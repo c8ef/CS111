@@ -15,11 +15,11 @@ Block 4:
 2 used inodes (out of 16)
     1 drwxr-xr-x   3   0   0       48 Apr 25 2022 17:19:34  #1
         ino: 1
-        i_mode: 0140755
-        i_nlink: 3
-        i_uid: 0
-        i_gid: 0
-        size(): 48
+        i_mode: 0 140755
+        i_nlink:  3
+        i_uid:  0
+        i_gid:  0
+        size():  48
         i_addr[0]: 3
         i_addr[1]: 0
         i_addr[2]: 0
@@ -32,11 +32,11 @@ Block 4:
         mtime: Apr 25 2022 17:19:34
    16 drwx------   2   0   0       32 Apr 25 2022 17:19:34  #16
         ino: 16
-        i_mode: 0140700
-        i_nlink: 2
-        i_uid: 0
-        i_gid: 0
-        size(): 32
+        i_mode: 0 140700
+        i_nlink:  2
+        i_uid:  0
+        i_gid:  0
+        size():  32
         i_addr[0]: 4
         i_addr[1]: 0
         i_addr[2]: 0

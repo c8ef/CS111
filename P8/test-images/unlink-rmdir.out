@@ -8,11 +8,11 @@ played log entries 3483797219 to 3483797236
 1 used inodes (out of 16)
     1 drwxr-xr-x   2   0   0       48 Apr 25 2022 17:19:35  #1
         ino: 1
-        i_mode: 0140755
-        i_nlink: 2
-        i_uid: 0
-        i_gid: 0
-        size(): 48
+        i_mode: 0 140755
+        i_nlink:  2
+        i_uid:  0
+        i_gid:  0
+        size():  48
         i_addr[0]: 3
         i_addr[1]: 0
         i_addr[2]: 0

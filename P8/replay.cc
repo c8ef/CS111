@@ -18,25 +18,30 @@ V6Replay::V6Replay(V6FS &fs)
   r_.seek(hdr_.l_checkpoint);
 }
 
-void V6Replay::apply(const LogBegin &e) {
-  // You need to implement this function
-}
+void V6Replay::apply(const LogBegin &e) {}
 
 void V6Replay::apply(const LogPatch &e) {
-  // You need to implement this function
+  auto buf = fs_.bread(e.blockno);
+  // don't even try strncpy
+  // i waste several hours THANKS TO strncpy
+  memcpy(buf->mem_ + e.offset_in_block, (const char *)e.bytes.data(),
+         e.bytes.size());
+
+  buf->bdwrite();
 }
 
 void V6Replay::apply(const LogBlockAlloc &e) {
-  // You need to implement this function
+  auto buf = fs_.bread(e.blockno);
+  if (e.zero_on_replay) {
+    memset(buf->mem_, 0, SECTOR_SIZE);
+    buf->bdwrite();
+  }
+  freemap_.at(e.blockno) = 0;
 }
 
-void V6Replay::apply(const LogBlockFree &e) {
-  // You need to implement this function
-}
+void V6Replay::apply(const LogBlockFree &e) { freemap_.at(e.blockno) = 1; }
 
-void V6Replay::apply(const LogCommit &e) {
-  // You need to implement this function
-}
+void V6Replay::apply(const LogCommit &e) {}
 
 void V6Replay::apply(const LogRewind &e) {
   // Note:  LogRewind is already handled specially by read_next(),
